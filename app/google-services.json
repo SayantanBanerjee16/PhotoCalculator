@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1085709083086",
+    "firebase_url": "https://photocalculator-727a7.firebaseio.com",
+    "project_id": "photocalculator-727a7",
+    "storage_bucket": "photocalculator-727a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085709083086:android:664879aa89fe20262f8b9f",
+        "android_client_info": {
+          "package_name": "com.sayantanbanerjee.photocalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085709083086-t6tmctg148jb87f5dhp71a6dck564at3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqv1AC97TQaQ6byDXIPaA2W2HFIhuK7AM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085709083086-t6tmctg148jb87f5dhp71a6dck564at3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
