@@ -3,20 +3,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Through this application, one can click photos consisting basic Mathematics expression and result will be calculated"
+        android:textAlignment="center"
+        android:padding="8dp"
+        android:textColor="@color/red"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:scaleType="fitCenter"
-        android:contentDescription="@string/imageContentDesc" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView" />
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:layout_below="@+id/heading"
+        android:contentDescription="@string/imageContentDesc"
+        android:scaleType="fitCenter" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonPanel"
+        android:layout_below="@+id/imageView"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/expressionView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Choose an photo containing an expression!"
+            android:textAlignment="center"
+            android:textColor="@color/greenlight"
+            android:textSize="24sp"
+            android:textStyle="bold|normal" />
+
+        <TextView
+            android:id="@+id/resultView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="The result will be displayed here"
+            android:textAlignment="center"
+            android:textColor="@color/greendark"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -30,20 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@color/red"
-            android:padding="8dp"
+            android:padding="20dp"
             android:text="@string/chooseImage"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/detectText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@color/red"
-            android:padding="8dp"
-            android:text="@string/detectText"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />

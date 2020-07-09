@@ -16,9 +16,9 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 class MainActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
-    private lateinit var textView: TextView
+    private lateinit var expressionView: TextView
+    private lateinit var resultView: TextView
     private lateinit var chooseImage: Button
-    private lateinit var detectText: Button
     private val IMAGE_CAMERA_CODE = 101
 
     private lateinit var bitmap: Bitmap
@@ -28,19 +28,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         imageView = findViewById(R.id.imageView)
-        textView = findViewById(R.id.textView)
+        expressionView = findViewById(R.id.expressionView)
+        resultView = findViewById(R.id.resultView)
         chooseImage = findViewById(R.id.chooseImage)
-        detectText = findViewById(R.id.detectText)
 
         chooseImage.setOnClickListener {
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (takePictureIntent.resolveActivity(packageManager) != null) {
                 startActivityForResult(takePictureIntent, IMAGE_CAMERA_CODE)
             }
-        }
-
-        detectText.setOnClickListener {
-            detectText()
         }
     }
 
@@ -50,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             val extras: Bundle? = data?.extras
             bitmap = extras?.get("data") as Bitmap
             imageView.setImageBitmap(bitmap)
+            detectText()
         }
     }
 
@@ -61,7 +58,14 @@ class MainActivity : AppCompatActivity() {
         textRecognizer.processImage(image)
             .addOnSuccessListener {
                 val initialText: String = it.text
-                var resultText: String = initialText
+
+                if (initialText != "") {
+                    expressionView.text = "Expression : " + initialText
+                } else {
+                    expressionView.text = "Expression : NULL"
+                }
+
+                val resultText: String = initialText
 
                 var stringOne: String = ""
                 var stringTwo: String = ""
@@ -71,65 +75,71 @@ class MainActivity : AppCompatActivity() {
                 var flagResult: Boolean = true
                 var finalResult: String = ""
 
-                for (char: Char in resultText) {
-                    Log.i("#######",char.toString())
-                    if (char == ' ' || char == '\n') {
-                        continue
-                    } else if (char in '0'..'9') {
-                        if (flag) {
-                            stringOne += char
-                        } else {
-                            stringTwo += char
-                        }
-                    } else if (char == '+' || char == '-' || char == '_' || char == 'x' || char == 'X' || char == '/') {
-                        if (!flagOperand) {
-                            flagOperand = true;
-                            flag = false;
-                            if (char == '+') {
-                                operand = 1
-                            } else if (char == '-' || char == '_') {
-                                operand = 2
-                            } else if (char == 'x' || char == 'X') {
-                                operand = 3
+                try {
+                    for (char: Char in resultText) {
+                        Log.i("#######", char.toString())
+                        if (char == ' ' || char == '\n') {
+                            continue
+                        } else if (char in '0'..'9') {
+                            if (flag) {
+                                stringOne += char
                             } else {
-                                operand = 4
+                                stringTwo += char
+                            }
+                        } else if (char == '+' || char == '-' || char == '_' || char == 'x' || char == 'X' || char == '/') {
+                            if (!flagOperand) {
+                                flagOperand = true;
+                                flag = false;
+                                if (char == '+') {
+                                    operand = 1
+                                } else if (char == '-' || char == '_') {
+                                    operand = 2
+                                } else if (char == 'x' || char == 'X') {
+                                    operand = 3
+                                } else {
+                                    operand = 4
+                                }
+                            } else {
+                                flagResult = false
+                                break
                             }
                         } else {
                             flagResult = false
                             break
                         }
-                    } else {
-                        flagResult = false
-                        break
                     }
-                }
 
-                if (!flagResult) {
-                    finalResult = "It isn't any VALID mathematical expression!"
-                } else {
-                    val first = stringOne.toInt()
-                    val second = stringTwo.toInt()
-                    var result: Int = 0
-                    if (operand == 1) {
-                        result = first + second
-                    } else if (operand == 2) {
-                        result = first - second
-                    } else if (operand == 3) {
-                        result = first * second
+                    if (!flagResult) {
+                        finalResult = "It isn't any VALID mathematical expression!"
                     } else {
-                        if(second == 0){
-                            finalResult = "Error! Cannot divide by zero"
-                        }else{
-                            result = first / second
+                        val first = stringOne.toInt()
+                        val second = stringTwo.toInt()
+                        var result: Int = 0
+                        if (operand == 1) {
+                            result = first + second
+                        } else if (operand == 2) {
+                            result = first - second
+                        } else if (operand == 3) {
+                            result = first * second
+                        } else {
+                            if (second == 0) {
+                                finalResult = "Error! Cannot divide by zero"
+                            } else {
+                                result = first / second
+                            }
+                        }
+
+                        if (second != 0 && operand != 4) {
+                            finalResult = "Final Output : $result"
                         }
                     }
 
-                    if(second != 0 && operand != 4){
-                        finalResult = "Final Output : $result"
-                    }
+                    resultView.text = finalResult
+                } catch (exception: Exception) {
+                    finalResult =
+                        "It isn't any VALID mathematical expression! Or The model couldn't determine the expression."
+                    resultView.text = finalResult
                 }
-
-                textView.text = finalResult
 
             }
             .addOnFailureListener {

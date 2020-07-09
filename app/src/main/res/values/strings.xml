@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PhotoCalculator</string>
+    <string name="app_name">Photo Calculator</string>
     <string name="detectText">Detect Text</string>
     <string name="chooseImage">Choose Image</string>
     <string name="imageContentDesc">Image captured From Camera</string>
