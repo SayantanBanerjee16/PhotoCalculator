@@ -3,4 +3,12 @@
     <string name="detectText">Detect Text</string>
     <string name="chooseImage">Choose Image</string>
     <string name="imageContentDesc">Image captured From Camera</string>
+    <string name="noZeroDivide">Error! Cannot divide by zero.</string>
+    <string name="invalid">It isn\'t any VALID mathematical expression!</string>
+    <string name="cantRecognize">It isn\'t any VALID mathematical expression. Or The model couldn\'t determine the expression.</string>
+    <string name="expression">Expression :</string>
+    <string name="expressionNull">Expression : NULL</string>
+    <string name="initialText">Through this application, one can click photos consisting basic Mathematics expression and result will be calculated.</string>
+    <string name="expressionInitial">Choose an photo containing an expression!</string>
+    <string name="resultInitial">The result will be displayed here</string>
 </resources>

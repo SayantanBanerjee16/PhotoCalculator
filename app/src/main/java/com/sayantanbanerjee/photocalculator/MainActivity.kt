@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resultView: TextView
     private lateinit var chooseImage: Button
     private val IMAGE_CAMERA_CODE = 101
-
     private lateinit var bitmap: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,9 +59,9 @@ class MainActivity : AppCompatActivity() {
                 val initialText: String = it.text
 
                 if (initialText != "") {
-                    expressionView.text = "Expression : " + initialText
+                    expressionView.text = getString(R.string.expression) + " " + initialText
                 } else {
-                    expressionView.text = "Expression : NULL"
+                    expressionView.text = getString(R.string.expressionNull)
                 }
 
                 val resultText: String = initialText
@@ -77,7 +76,6 @@ class MainActivity : AppCompatActivity() {
 
                 try {
                     for (char: Char in resultText) {
-                        Log.i("#######", char.toString())
                         if (char == ' ' || char == '\n') {
                             continue
                         } else if (char in '0'..'9') {
@@ -110,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     if (!flagResult) {
-                        finalResult = "It isn't any VALID mathematical expression!"
+                        finalResult = getString(R.string.invalid)
                     } else {
                         val first = stringOne.toInt()
                         val second = stringTwo.toInt()
@@ -123,27 +121,25 @@ class MainActivity : AppCompatActivity() {
                             result = first * second
                         } else {
                             if (second == 0) {
-                                finalResult = "Error! Cannot divide by zero"
+                                finalResult = getString(R.string.noZeroDivide)
                             } else {
                                 result = first / second
                             }
                         }
 
                         if (second != 0 && operand != 4) {
-                            finalResult = "Final Output : $result"
+                            finalResult = "Final Result : $result"
                         }
                     }
 
                     resultView.text = finalResult
                 } catch (exception: Exception) {
-                    finalResult =
-                        "It isn't any VALID mathematical expression! Or The model couldn't determine the expression."
-                    resultView.text = finalResult
+                    resultView.text = getString(R.string.cantRecognize)
                 }
 
             }
             .addOnFailureListener {
-                Toast.makeText(this, "NO TEXT DETECTED / FOUND", Toast.LENGTH_LONG).show()
+                resultView.text = getString(R.string.cantRecognize)
             }
 
     }
