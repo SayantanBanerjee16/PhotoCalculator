@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        repository = InformationRepository(InformationDatabase.getInstance(application).informationDAO)
+        repository = InformationRepository(InformationDatabase.getInstance(application).informationDAO)
 
         imageView = findViewById(R.id.imageView)
         showHistory = findViewById(R.id.showHistory)
@@ -150,8 +150,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     resultView.text = finalResult
-//                    val newInformation : Information = Information(0,expressionString,finalResult)
-//                    repository.insert(newInformation)
+                    val newInformation : Information = Information(0,expressionString,finalResult)
+                    repository.insert(newInformation)
                 } catch (exception: Exception) {
                     resultView.text = getString(R.string.cantRecognize)
                 }
