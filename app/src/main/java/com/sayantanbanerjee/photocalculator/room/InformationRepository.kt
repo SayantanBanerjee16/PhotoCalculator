@@ -4,7 +4,7 @@ class InformationRepository(private val dao : InformationDAO) {
 
     val information = dao.getAllInformation()
 
-    fun insert(information: Information){
+    suspend fun insert(information: Information){
         dao.insert(information)
     }
 }

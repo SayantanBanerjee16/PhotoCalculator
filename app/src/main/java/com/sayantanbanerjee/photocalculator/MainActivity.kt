@@ -16,6 +16,9 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.sayantanbanerjee.photocalculator.room.Information
 import com.sayantanbanerjee.photocalculator.room.InformationDatabase
 import com.sayantanbanerjee.photocalculator.room.InformationRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -141,23 +144,30 @@ class MainActivity : AppCompatActivity() {
                                 finalResult = getString(R.string.noZeroDivide)
                             } else {
                                 result = first / second
+                                finalResult = "Final Result : $result"
                             }
                         }
 
-                        if (second != 0 && operand != 4) {
+                        if (operand != 4) {
                             finalResult = "Final Result : $result"
                         }
                     }
+                    Log.i("#########","DONE")
 
                     resultView.text = finalResult
-                    val newInformation : Information = Information(0,expressionString,finalResult)
-                    repository.insert(newInformation)
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val newInformation : Information = Information(0,expressionString,finalResult)
+                        repository.insert(newInformation)
+                    }
                 } catch (exception: Exception) {
+                    Log.i("#########CATCH",exception.toString())
                     resultView.text = getString(R.string.cantRecognize)
                 }
 
             }
             .addOnFailureListener {
+                Log.i("#########FAILURE",it.toString())
                 resultView.text = getString(R.string.cantRecognize)
             }
 
