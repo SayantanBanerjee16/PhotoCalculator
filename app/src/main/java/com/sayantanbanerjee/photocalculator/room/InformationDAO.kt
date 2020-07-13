@@ -8,7 +8,7 @@ import androidx.room.Query
 interface InformationDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(information: Information) : Long
+    fun insert(information: Information) : Long
 
     @Query("SELECT * FROM Information")
     fun getAllInformation() : LiveData<List<Information>>

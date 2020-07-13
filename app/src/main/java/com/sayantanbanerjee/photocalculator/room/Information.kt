@@ -8,6 +8,5 @@ data class Information(
     @PrimaryKey(autoGenerate = true)
     val id : Int,
     val expression : String,
-    val result : String,
-    val date : String
+    val result : String
 )

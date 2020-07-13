@@ -10,8 +10,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.sayantanbanerjee.photocalculator.room.Information
+import com.sayantanbanerjee.photocalculator.room.InformationDatabase
+import com.sayantanbanerjee.photocalculator.room.InformationRepository
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,14 +24,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var expressionView: TextView
     private lateinit var resultView: TextView
     private lateinit var chooseImage: Button
+    private lateinit var showHistory: Button
     private val IMAGE_CAMERA_CODE = 101
     private lateinit var bitmap: Bitmap
+    private lateinit var repository : InformationRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        repository = InformationRepository(InformationDatabase.getInstance(application).informationDAO)
+
         imageView = findViewById(R.id.imageView)
+        showHistory = findViewById(R.id.showHistory)
         expressionView = findViewById(R.id.expressionView)
         resultView = findViewById(R.id.resultView)
         chooseImage = findViewById(R.id.chooseImage)
@@ -36,6 +46,11 @@ class MainActivity : AppCompatActivity() {
             if (takePictureIntent.resolveActivity(packageManager) != null) {
                 startActivityForResult(takePictureIntent, IMAGE_CAMERA_CODE)
             }
+        }
+
+        showHistory.setOnClickListener {
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -57,12 +72,14 @@ class MainActivity : AppCompatActivity() {
         textRecognizer.processImage(image)
             .addOnSuccessListener {
                 val initialText: String = it.text
+                var expressionString : String = ""
 
                 if (initialText != "") {
-                    expressionView.text = getString(R.string.expression) + " " + initialText
+                    expressionString = getString(R.string.expression) + " " + initialText
                 } else {
-                    expressionView.text = getString(R.string.expressionNull)
+                    expressionString = getString(R.string.expressionNull)
                 }
+                expressionView.text = expressionString
 
                 val resultText: String = initialText
 
@@ -133,6 +150,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     resultView.text = finalResult
+//                    val newInformation : Information = Information(0,expressionString,finalResult)
+//                    repository.insert(newInformation)
                 } catch (exception: Exception) {
                     resultView.text = getString(R.string.cantRecognize)
                 }
