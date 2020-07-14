@@ -13,4 +13,5 @@
     <string name="resultInitial">The result will be displayed here</string>
     <string name="showHistory">SHOW HISTORY</string>
     <string name="HISTORY">Past History</string>
+    <string name="denied">Permission Denied!</string>
 </resources>

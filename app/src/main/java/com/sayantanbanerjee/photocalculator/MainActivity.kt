@@ -1,17 +1,19 @@
 package com.sayantanbanerjee.photocalculator
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.sayantanbanerjee.photocalculator.room.Information
@@ -20,7 +22,6 @@ import com.sayantanbanerjee.photocalculator.room.InformationRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,13 +32,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var showHistory: Button
     private val IMAGE_CAMERA_CODE = 101
     private lateinit var bitmap: Bitmap
-    private lateinit var repository : InformationRepository
+    private lateinit var repository: InformationRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        repository = InformationRepository(InformationDatabase.getInstance(application).informationDAO)
+        repository =
+            InformationRepository(InformationDatabase.getInstance(application).informationDAO)
 
         imageView = findViewById(R.id.imageView)
         showHistory = findViewById(R.id.showHistory)
@@ -46,15 +48,50 @@ class MainActivity : AppCompatActivity() {
         chooseImage = findViewById(R.id.chooseImage)
 
         chooseImage.setOnClickListener {
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (takePictureIntent.resolveActivity(packageManager) != null) {
-                startActivityForResult(takePictureIntent, IMAGE_CAMERA_CODE)
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                startCamera()
+            } else {
+                val permissionArrays = arrayOf<String>(Manifest.permission.CAMERA)
+                ActivityCompat.requestPermissions(
+                    this,
+                    permissionArrays,
+                    1
+                );
             }
         }
 
         showHistory.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                startCamera()
+            }else{
+                Toast.makeText(this,getString(R.string.denied),Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun startCamera() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(takePictureIntent, IMAGE_CAMERA_CODE)
         }
     }
 
@@ -76,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         textRecognizer.processImage(image)
             .addOnSuccessListener {
                 val initialText: String = it.text
-                var expressionString : String = ""
+                var expressionString: String = ""
 
                 if (initialText != "") {
                     expressionString = getString(R.string.expression) + " " + initialText
@@ -154,7 +191,8 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            val newInformation : Information = Information(0,expressionString,finalResult)
+                            val newInformation: Information =
+                                Information(0, expressionString, finalResult)
                             repository.insert(newInformation)
                         }
                     }
