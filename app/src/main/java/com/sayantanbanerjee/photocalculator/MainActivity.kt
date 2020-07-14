@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -158,15 +159,16 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     resultView.text = finalResult
+                    resultView.visibility = View.VISIBLE
                 } catch (exception: Exception) {
-                    Log.i("#########CATCH",exception.toString())
                     resultView.text = getString(R.string.cantRecognize)
+                    resultView.visibility = View.VISIBLE
                 }
 
             }
             .addOnFailureListener {
-                Log.i("#########FAILURE",it.toString())
                 resultView.text = getString(R.string.cantRecognize)
+                resultView.visibility = View.VISIBLE
             }
 
     }

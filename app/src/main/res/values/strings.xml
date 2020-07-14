@@ -8,8 +8,8 @@
     <string name="cantRecognize">It isn\'t any VALID mathematical expression. Or The model couldn\'t determine the expression.</string>
     <string name="expression">Expression :</string>
     <string name="expressionNull">Expression : NULL</string>
-    <string name="initialText">Through this application, one can click photos consisting basic Mathematics expression and result will be calculated.</string>
-    <string name="expressionInitial">Choose an photo containing an expression!</string>
+    <string name="initialText">Through this application, one can capture photos consisting basic Mathematics expression and result will be calculated.</string>
+    <string name="expressionInitial">Capture a photo containing an expression!</string>
     <string name="resultInitial">The result will be displayed here</string>
     <string name="showHistory">SHOW HISTORY</string>
     <string name="HISTORY">Past History</string>

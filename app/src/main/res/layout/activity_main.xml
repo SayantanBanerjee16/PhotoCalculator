@@ -35,6 +35,7 @@
         android:layout_height="300dp"
         android:layout_below="@+id/card_view"
         android:layout_marginTop="20dp"
+        android:background="@drawable/photocallogo"
         android:contentDescription="@string/imageContentDesc"
         android:padding="8dp"
         android:scaleType="fitCenter" />
@@ -67,6 +68,7 @@
             android:layout_height="wrap_content"
             android:text="@string/resultInitial"
             android:textAlignment="center"
+            android:visibility="invisible"
             android:textColor="@color/greenDark"
             android:textSize="24sp"
             android:textStyle="bold" />
