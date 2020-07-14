@@ -151,15 +151,13 @@ class MainActivity : AppCompatActivity() {
                         if (operand != 4) {
                             finalResult = "Final Result : $result"
                         }
-                    }
-                    Log.i("#########","DONE")
 
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val newInformation : Information = Information(0,expressionString,finalResult)
+                            repository.insert(newInformation)
+                        }
+                    }
                     resultView.text = finalResult
-
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val newInformation : Information = Information(0,expressionString,finalResult)
-                        repository.insert(newInformation)
-                    }
                 } catch (exception: Exception) {
                     Log.i("#########CATCH",exception.toString())
                     resultView.text = getString(R.string.cantRecognize)
