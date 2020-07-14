@@ -5,7 +5,7 @@ Through this Android application, we can capture photos consisting simple Mathem
 
 ## Generated APK
 
-Navigate to [/APK](https://github.com/SayantanBanerjee16/PhotoCalculator/tree/master/APK) folder to get the generated APK.
+Navigate to [/APK](https://github.com/SayantanBanerjee16/PhotoCalculator/tree/master/APK/) folder to get the generated debug APK.
 
 ## Final Product
 
